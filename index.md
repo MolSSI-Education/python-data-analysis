@@ -3,8 +3,7 @@ layout: lesson
 root: .  # Is the only page that doesn't follow the pattern /:path/index.html
 permalink: index.html  # Is the only page that doesn't follow the pattern /:path/index.html
 ---
-These are lessons on data analysis using Python from the [Molecular Sciences Software Institute]({{ site.molssi_site }}) (MolSSI). We assume that the student has experience with programming in Python, and familiarity with Python sytnax and control structures. If you need refreshing on this topic, please see our [Python Data and Scripting Workshop](https://molssi-education.github.io/python_scripting_cms/)
-
+These are lessons on data analysis using Python from the [Molecular Sciences Software Institute]({{ site.molssi_site }}) (MolSSI). 
 This website is based on a lesson template from [Software Carpentry](https://www.software-carpentry.org)
 
  To see the full MolSSI's education mission statement, please see
@@ -13,6 +12,7 @@ This website is based on a lesson template from [Software Carpentry](https://www
 > ## Prerequisites
 >
 > Students should be familiar with opening the Terminal window and creating and navigating files in bash.
+> Students should be familiar with Python syntax, control structures (conditional statements, for loops), parsing files, and importing packages. If you are unfamiliar with this material, please see our [Python Data and Scripting Workshop](https://molssi-education.github.io/python_scripting_cms/)
 {: .prereq}
 
 {% include links.md %}

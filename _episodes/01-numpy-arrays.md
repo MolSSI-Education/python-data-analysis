@@ -1,5 +1,5 @@
 ---
-title: "Features of Numpy Arrays"
+title: "Working with Numpy Arrays"
 teaching: 45
 exercises: 20
 questions:
@@ -7,11 +7,11 @@ questions:
 - "How can I use NumPy to do calculations?"
 objectives:
 - "Be able to name the differences between Python lists and numpy arrays."
-- "Understand the idea of broadcasting"
+- "Understand the idea of broadcasting."
 keypoints:
 - "NumPy arrays which are the same size use element-wise operations when added or subtracted"
 - "NumPy uses something called *broadcasting* for arrays which are not the same size to allow arrays to be added or multiplied."
-- "NumPy has extensive documentation online - you "
+- "NumPy has extensive documentation online - you should check this out if you need to do a computation."
 ---
 
 [Numpy](https://numpy.org/) is a widely used Python library for scientific computing. It has a number of useful features, including the a data structure called an array. Compared to the built-in data typles `lists` which we discussed in the [Python Data and Scripting Workshop](https://molssi-education.github.io/python_scripting_cms/), `numpy` has many features which can help you in your data analysis.
@@ -41,9 +41,9 @@ r2_array = np.array(r2)
 ~~~
 {: .language-python}
 
-In this code block, we've created two lists (`r1` and `r2`). We then created numpy array versions of these lists.
+In this code block, we've created two lists (`r1` and `r2`). We then created numpy array versions of these lists by calling `np.array(list_name)`.
 
-When we print `r1` and `r1_array`, the results look very similar.
+When we print `r1` and `r1_array`, the results look very similar, but we see that they are different types.
 
 ~~~
 print(r1)
@@ -57,7 +57,19 @@ print(r1_array)
 ~~~
 {: .output}
 
-However, one way numpy arrays and lists are different is that you can easily perform element-wise operations on numpy arrays without loops. **This is advantageous because loops in Python are slow. However, `numpy` functions are optimized to run quickly.**  You can make your code much faster if you use numpy element-by-element operations instead of loops. 
+~~~
+print(type(r1))
+print(type(r1_array))
+~~~
+{: .language-python}
+
+~~~
+<class 'list'>
+<class 'numpy.ndarray'>
+~~~
+{: .output}
+
+One way numpy arrays and lists are different is that you can easily perform element-wise operations on numpy arrays without loops. **This is advantageous because loops in Python are slow. However, `numpy` functions are optimized to run quickly.**  You can make your code much faster if you use numpy element-by-element operations instead of loops. 
 
 You can add two arrays together, multiply arrays by scalars, or do element-wise multiplcation of arrays.
 
@@ -66,13 +78,14 @@ For example, you can multiply two numpy arrays to get their element-wise product
 In contrast, if `a` and `b` were lists, you would get an error. 
 
 > ## Check your understanding
-> What does the following code result in?
+> Consider the variable definitions for `a1` and `a2`. What does each print statment result in?
 >
 > ~~~
 > a1 = np.array([2, 1, 0])
 > a2 = np.array([1, 3, 5])
 > 
 > print(a1 * a2)
+> print(a1 + a2)
 > ~~~
 > {: .language-python}
 > 
@@ -82,27 +95,36 @@ In contrast, if `a` and `b` were lists, you would get an error.
 >> The code block results in 
 >> ~~~
 >> [2 3 0]
+>> [3 4 5]
 >> ~~~
 >> {: .output}
->> The first element is `a1[0]*a2[0]`, the second element is `a1[1]*a2[1]`, and the third element is `a1[2]*a2[2]`.
+>> For the first line, the first element is `a1[0]*a2[0]`, the second element is `a1[1]*a2[1]`, and the third element is `a1[2]*a2[2]`.
+>> For the second line, the first element is `a1[0]+a2[0]`, second is `a1[1]+a2[1]`, third is `a1[2]+a2[2]`.
 >>
 > {: .solution}
 {: .challenge}
 
 > ## Check your understanding
-> What happens if `a1` and `a2` are lists?
+> What happens if `a1` and `a2` are lists? Consider each `print` statement separately.
 >
 > ~~~
 > a1 = [2, 1, 0]
 > a2 = [1, 3, 5]
 > 
+> print(a1 + a2)
 > print(a1 * a2)
 > ~~~
 > {: .language-python}
 > 
 >> ## Answer
 >> 
->> The code block results in 
+>> The first print statement results in concatenation of the lists.
+>> ~~~
+>> [2, 1, 0, 1, 3, 5]
+>> ~~~
+>> {: .output}
+>> 
+>> Second print statement results in a TypeError. Two lists cannot be multiplied. 
 >> ~~~
 >> TypeError: can't multiply sequence by non-int of type 'list
 >> ~~~
@@ -139,11 +161,14 @@ Put the `data` folder from this link into the directory where you are working wi
 > {: .solution}
 {: .challenge}
 
-In a previous lesson, we calculated the mean of each column of the array using the `range` function and a `for` loop. This was good because it reminded us of the `range` function and how `for` loops worked. However, the `numpy.mean` function will let us do that without a for loop.
+In a previous lesson, we calculated the mean of each column of the array using the `range` function and a `for` loop. This was good because it reminded us of the `range` function and how `for` loops worked. However, the `numpy.mean` function will let us do that without a `for` loop.
 
-Check out the [numpy documentation](https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html) for the mean function. Can you figure out what argument we might change to get the mean of each column?
-
-We will use the `axis` argument. If we do not specify `axis`, the mean of the entire array is computed. For the `axis` argument, rows correspond to axis 0, and columns correspond to axis 1. This is similar to slices where you give the indices as `row, column`.
+> ## Exercise
+> Check out the [numpy documentation](https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html) for the mean function. Can you figure out what argument we might change to get the mean of each column?
+>> ## Solution
+>> We will use the `axis` argument. If we do not specify `axis`, the mean of the entire array is computed. For the `axis` argument, rows correspond to axis 0, and columns correspond to axis 1. This is similar to slices where you give the indices as `row, column`.
+> {: .solution}
+{: .challenge}
 
 ~~~
 column_averages = np.mean(data, axis=0)
@@ -196,6 +221,7 @@ print(avg_col_1_2)
 >> data_averages = np.mean(data[:,1:], axis=0)
 >> print(data_averages)
 >> ~~~
+>> {: .language-python}
 >> ~~~
 >> [10.87695093  7.34234496 11.20979133 10.9934435 ]
 >> ~~~
@@ -230,11 +256,17 @@ To get every value in the array that is greater than 10, we can use this as a li
 
 ~~~
 greater_than_10_values = data[data>10]
+print(greater_than_10_values)
 ~~~
 {: .language-python}
 
-## Broadcasting
+~~~
+[   11.5478    13.9594    11.6945 ...    10.7564 10000.        10.7848]
+~~~
+{: .output}
 
+
+## Broadcasting
 Another special thing about numpy is something called **broadcasting**. Broadcasting occurs when you attempt mathematical operations on arrays that have different shapes. If possible, the smaller array is "broadcast" across the larger array.
 
 For example, using numpy arrays, you can multiply every element in a numpy array by 10
@@ -309,9 +341,9 @@ print(new_coordinates)
 {: .language-python}
 
 ~~~
-[[ 2.        2.        2.      ]
- [ 0.992844  1.001486  1.931026]
- [ 0.965491 -0.003471  1.207929]]
+[[ 2.        0.992844  0.965491]
+ [ 2.        1.001486 -0.003471]
+ [ 2.        1.931026  1.207929]]
 ~~~
 {: .output}
 
@@ -334,11 +366,131 @@ print(new_coordinates)
 > ## Exercise
 > Use the features of numpy arrays to subtract the mean of each column from the column data. Leave the `frame` column unchanged. Save your new array as a variable with the name `deviation`. Recall that we already have a variable with the average of each column (`column_averages`).
 >> ## Solution
->>  Using broadcasting, we could subtract this vector from our data array. However, since we want to leave frame unchanged, there is one additional step. Since we don't care about the frame average, we will overwrite it with zero.
+>>  Using broadcasting, we could subtract this vector from our data array. However, since we want to leave frame unchanged, there is one additional step. Note that if we just slice `column_averages`, broadcasting will not work since the arrays do not have matching dimensions. 
+>> 
+>> ~~~
+>> deviation = data - column_averages[1:]
+>> ~~~
+>> {: .language-python}
+>> ~~~
+>> ---------------------------------------------------------------------------
+>> ValueError                                Traceback (most recent call last)
+>> <ipython-input-78-f0fc06fc540c> in <module>
+>> ----> 1 data - column_averages[1:]
+>> 
+>> ValueError: operands could not be broadcast together with shapes (10000,5) (4,) 
+>> ~~~
+>> {: .error}
+>>
+>> Because we don't care about the frame average, we will overwrite it with zero so that we can still use broadcasting.
 >> ~~~
 >> column_averages[0] = 0
 >> deviation = data - column_averages
 >> print(deviation)
+>> ~~~
+>> {: .language-python}
+> {: .solution}
+{: .challenge}
+
+## When can you use broadcasting?
+Broadcasting is extremely useful, but there will be times when you cannot use it and will have to use a `for` loop. For example, if the value of something in the loop depends on a previous value that is calculated in the loop.
+
+~~~
+my_array = np.array([1, 0, 1])
+
+for i in range(9):
+    my_array = my_array + 2
+    print(my_array)
+~~~
+{: .language-python}
+
+~~~
+[3 2 3]
+[5 4 5]
+[7 6 7]
+[9 8 9]
+[11 10 11]
+[13 12 13]
+[15 14 15]
+[17 16 17]
+[19 18 19]
+~~~
+{: .language-output}
+
+In this example, we might want to save all of the results in an array called `results` which has size `(10, 3)`. If you were working with `lists`, you would have defined an empty list and used the `append` function within the loop. However, we would like to save our results in a numpy array. Often, when you encounter a situation like this you will make an empty or placeholder array of the appropriate size. The function `np.zeros([m,n])` will create an array filled with zeros of size `m rows` x `n columns`.
+
+~~~
+results = np.zeros([10, 3])
+print('This is my array/n', results)
+
+results[0] = np.array([1, 0, 1])
+
+for i in range(1,10):
+    results[i] = results[i-1] + 2
+
+print('I have filled in the array :/n', results)
+~~~
+{: .language-python}
+
+~~~
+This is my array
+ [[0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]
+ [0. 0. 0.]]
+I have filled in the array :
+ [[ 1.  0.  1.]
+ [ 3.  2.  3.]
+ [ 5.  4.  5.]
+ [ 7.  6.  7.]
+ [ 9.  8.  9.]
+ [11. 10. 11.]
+ [13. 12. 13.]
+ [15. 14. 15.]
+ [17. 16. 17.]
+ [19. 18. 19.]]
+ ~~~
+ {: .output}
+
+Here, we have created an array which only has zeros, then filled in values to that array. Notice a few more things about this modification. Our `range` function now goes over `1-10` instead of `9`. This is because we are calculating `results[i]` using `results[i-1]`.
+
+> ## Exercise
+> Imagine you are simulating a [random walk](https://en.wikipedia.org/wiki/Random_walk). We will simulate a *two dimensional* random walk. In our random walk, we start with a particle at the origin and it moves either +1, 0, or -1 in each direction randomly for each step. Write a code which achieve this a variable `n_steps` number of steps. Initially set the `n_steps` variable to `100`.
+> 
+> Record the position at each step in a numpy array called `coordinates` of size `(n_steps, 2)` where columns 0-1 correspond to the `x` position, the `y` position, and the `z` position respectively.
+>
+> **Hint** - You will need to generate a numpy array with random number for this. Try googling 'numpy random integer' to see if you can find a numpy function to use.
+>> ## Hint Solution
+>> If you google 'numpy random integer', you will see the function `np.random.randit` - see documentation [here](https://docs.scipy.org/doc/numpy-1.15.0/reference/generated/numpy.random.randint.html?highlight=randint#numpy.random.randint). You can use this function to create arrays which have values from `low` up to, but *not including* the number you set for the `high` argument. The argument `size` should be set to the size we want, which is `[1, 2]`.
+> {: .solution}
+>
+>> ## Solution
+>> ~~~
+>> n_steps = 100
+>> 
+>> coordinates = np.zeros([n_steps, 2])
+>> 
+>> for i in range(1, n_steps):
+>>     random_displacement = np.random.randint(-1, 2, size=[1,2])
+>>     coordinates[i] = coordinates[i-1] + random_displacement
+>> ~~~
+>> {: .language-python}
+> {: .solution}
+{: .challenge}
+
+> ## Exercise
+> Use `matplotlib` to plot your particle's path.
+>> ## Solution
+>> ~~~
+>> import matplotlib.pyplot as plt
+>> 
+>> plt.plot(coordinates[:,0], coordinates[:,1])
 >> ~~~
 >> {: .language-python}
 > {: .solution}

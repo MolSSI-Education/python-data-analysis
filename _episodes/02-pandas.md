@@ -587,11 +587,11 @@ periodic_data['BoilingPoint'].loc['Kr']
 ~~~
 {: .output}
 
-> # Check your understanding
-> How would you access each of the following:
-> 1. The electron configuration of Boron.
-> 2. The atomic radius of the element on row 115
-> 3. The value in cell (50, 5)
+> ## Check your understanding
+> How would you access each of the following:  
+> The electron configuration of Boron.  
+> The atomic radius of the element on row 115.  
+> The value in cell (50, 5).  
 >> ## Solution
 >> ~~~
 >> periodic_data.loc['B', 'ElectronConfiguration']

@@ -709,6 +709,35 @@ periodic_data.query('MeltingPoint > BoilingPoint')
 ~~~
 {: .language-python}
 
+## Use `.sort_values` to sort data
+
+~~~
+periodic_data.sort_values(by='MeltingPoint')
+~~~
+
+This will sort by columns by default. It is also possible to sort an entire DataFrame based on values in a column. However, they all have to be the same type (numeric or string). 
+
+For example,
+
+~~~
+numeric_data = periodic_data[['AtomicNumber', 'BoilingPoint', 'AtomicMass', 'MeltingPoint']].copy()
+
+numeric_data.head()
+~~~
+{: .language-python}
+
+~~~
+numeric_data.sort_values(by='Au', axis=1)
+~~~
+{: .language-python}
+
+~~~
+numeric_data.sort_values(by='As', axis=1)
+~~~
+{: .language-python}
+
+**Note** how the column orders change.
+
 ## Adding new columns
 
 ## Built-in Plotting

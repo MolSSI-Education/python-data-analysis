@@ -11,8 +11,8 @@ This website is based on a lesson template from [Software Carpentry](https://www
 
 > ## Prerequisites
 >
-> Students should be familiar with opening the Terminal window and creating and navigating files in bash.
-> Students should be familiar with Python syntax, control structures (conditional statements, for loops), parsing files, and importing packages. If you are unfamiliar with this material, please see our [Python Data and Scripting Workshop](https://molssi-education.github.io/python_scripting_cms/)
+> - Students should be familiar with opening the Terminal window and creating and navigating files in bash.  
+> - Students should be familiar with Python syntax, control structures (conditional statements, for loops), parsing files, and importing packages. If you are unfamiliar with this material, please see our [Python Data and Scripting Workshop](https://molssi-education.github.io/python_scripting_cms/)
 {: .prereq}
 
 {% include links.md %}

@@ -32,7 +32,7 @@ import pandas as pd
 
 ## Reading data
 
-Today, we will be working with a data set that contains information about the elements in the periodic table. 2019 is the [International Year of the Periodic Table](https://www.iypt2019.org), so we will read in data about elements in the Periodic Table. The data is a csv (comma separated value) file from [PubChem](https://pubchem.ncbi.nlm.nih.gov/). You can download the file [here](../data/PubChemElements_all.csv).
+Today, we will be working with a data set that contains information about the elements in the periodic table  (2019 is the [International Year of the Periodic Table](https://www.iypt2019.org)!).The data is a csv (comma separated value) file from [PubChem](https://pubchem.ncbi.nlm.nih.gov/). You can download the file [here](../data/PubChemElements_all.csv).
 
 Once you have the file downloaded and saved in your directory, we will load it into pandas. This file is a csv (comma separated value) file, so we will load it using the [`pd.read_csv`](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html) command.
 
@@ -41,11 +41,10 @@ periodic_data = pd.read_csv('PubChemElements_all.csv')
 ~~~
 {: .language-python}
 
-
 Since this file is relatively simple, we do not need any additional arguments to the function. The `read_csv` function reads in tabular data which is comma delimited by default. 
 
-## Examining the dataframe
-The variable `periodic_data` is now a pandas DataFrame with the information contained in the csv file. You can examine the dataframe using the `.head()` method. This shows the first 5 rows stored in the DataFrame.
+## Examining the data
+The variable `periodic_data` is now a pandas DataFrame with the information contained in the csv file. You can examine the DataFrame using the `.head()` method. This shows the first 5 rows stored in the DataFrame.
 
 ~~~
 periodic_data.head()
@@ -232,7 +231,7 @@ memory usage: 15.8+ KB
  --       
 - First, the data type is listed. This is a pandas DataFrame. Next, it tells us that we have 118 rows (118 entries) in the DataFrame.
 - There are 17 columns of data
-- Next, the name of each column along with the number of entries for that column, and the data type for that column. Note that for some columns, such as `Electronegativity`, there are fewer than 118 entries. This occurs because data is missing for some elements. When `pandas` read in our data file, it replaced these missing values with `nan` (or 'not a number').
+- Next, the name of each column along with the number of entries for that column, and the data type for that column. Note that for some columns, such as `Electronegativity`, there are fewer than 118 entries. This occurs because data is missing for some elements. When `pandas` read in our data file, it replaced these missing values with `NaN` (or 'not a number').
 
 We can also see descriptive statistics easily using the `.describe()` command.
 
@@ -367,7 +366,98 @@ The describe function lists the `mean`, `max`, `min`, standard deviation and per
 
 ## Accessing Data
 
+Data in pandas DataFrames are stored in `rows` and `columns`.
+
+## Accessing data using row and column numbers
+Pandas DataFrames are organized using `columns`, which we have already discussed and `index` for the rows. 
+
+### To access data using the row number and column number, use the `.iloc` method.
+
+Data in pandas DataFrames can be accessed using slices in the same way as NumPy arrays using the `iloc` method.
+
+~~~
+# This will access row 35 (counting starting at 0)
+periodic_data.iloc[35]
+~~~
+{: .language-python}
+
+~~~
+AtomicNumber                           36
+Symbol                                 Kr
+Name                              Krypton
+AtomicMass                           83.8
+CPKHexColor                        5CB8D1
+ElectronConfiguration    [Ar]4s2 3d10 4p6
+Electronegativity                       3
+AtomicRadius                          202
+IonizationEnergy                       14
+ElectronAffinity                      NaN
+OxidationStates                         0
+StandardState                         Gas
+MeltingPoint                       115.79
+BoilingPoint                       119.93
+Density                          0.003733
+GroupBlock                      Noble gas
+YearDiscovered                       1898
+Name: 35, dtype: object
+~~~
+{: .output}
+
+or, you can use slicing syntax.
+
+~~~
+periodic_data.iloc[35:45]
+~~~
+{: .language-python}
+
+Like NumPy arrays, the second index is taken to be the column number.
+
+~~~
+# This selects the row 1 and column 2.
+periodic_data.iloc[1, 2]
+~~~
+{: .language-python}
+
+> ## Check your understanding
+> Use the `iloc` function to   
+>  Select row 5   
+>  Select rows 30 to the end.   
+>  Select column 2 through 4 and rows 50 to the end, every other row.
+>> ## Solution
+>> ~~~
+>> periodic_data.iloc[5]
+>> periodic_data.iloc[30:]
+>> periodic_data.iloc[50::2, 2::5]
+>> ~~~
+>> {: .language-python}
+> {: .solution}
+{: .challenge}
+
+
+## Accessing information by name
+
+Indices in pandas can either be identified using numbers (as in the row number, similar to numpy arrays), or by name using column names and index names.
+
 ### Accessing columns of data
+Unless otherwise specified in the `read_csv` command, pandas will use the first row of the file as column names. You can use these column names to access data in a particular column.
+
+To see all of the column names, you can type
+
+~~~
+periodic_data.columns
+~~~
+{: .language-python}
+
+~~~
+Index(['AtomicNumber', 'Symbol', 'Name', 'AtomicMass', 'CPKHexColor',
+       'ElectronConfiguration', 'Electronegativity', 'AtomicRadius',
+       'IonizationEnergy', 'ElectronAffinity', 'OxidationStates',
+       'StandardState', 'MeltingPoint', 'BoilingPoint', 'Density',
+       'GroupBlock', 'YearDiscovered'],
+      dtype='object')
+~~~
+{: .output}
+
 To access columns of data in pandas, you use the syntax
 
 ~~~
@@ -376,7 +466,7 @@ To access columns of data in pandas, you use the syntax
 ~~~
 {: .language-python}
 
-For example, to access the Electronegativity column, we would use the syntax
+For example, to access the data in the Electronegativity column, we would use the syntax
 
 ~~~
 periodic_data['Electronegativity']
@@ -434,40 +524,11 @@ periodic_data[['Name','Electronegativity']]
 > {: .solution}
 {: .challenge}
 
-## Accessing rows of data
-Pandas DataFrames are organized using `columns`, which we have already discussed and `index` for the rows. Indices in pandas can either be identified using numbers (as in the row number, similar to numpy arrays), or by name (similar to columns). By default, the *names* of the rows are the same as the numbers. You may have noticed that when you are printing your dataframes, there is an extra first column of numbers going from 0 to 118. These are the row names.
+### Accessing rows and columns by name
 
-To access rows using the row number, use the `.iloc` method.
+We have already discussed column names, but what about row names? By default, the *names* of the rows are the same as the numbers. You may have noticed that when you are printing your dataframes, there is an extra first column of numbers going from 0 to 118. These are the row names. Unless otherwise specified in the `read_csv` command, the row names will default to the row number.
 
-~~~
-# This will access row 35 (counting starting at 0)
-periodic_data.iloc[35]
-~~~
-{: .language-python}
-
-~~~
-AtomicNumber                           36
-Symbol                                 Kr
-Name                              Krypton
-AtomicMass                           83.8
-CPKHexColor                        5CB8D1
-ElectronConfiguration    [Ar]4s2 3d10 4p6
-Electronegativity                       3
-AtomicRadius                          202
-IonizationEnergy                       14
-ElectronAffinity                      NaN
-OxidationStates                         0
-StandardState                         Gas
-MeltingPoint                       115.79
-BoilingPoint                       119.93
-Density                          0.003733
-GroupBlock                      Noble gas
-YearDiscovered                       1898
-Name: 35, dtype: object
-~~~
-{: .output}
-
-To access rows using the row name, use the `.loc` method. Currently our row names and numbers are the same, so this does not look any different.
+To access rows using the row name, use the `.loc` method. Currently our row names and numbers are the same, so this does not look any different than using `iloc` if only one index is specified.
 
 ~~~
 periodic_data.loc[35]
@@ -493,6 +554,18 @@ Density                          0.003733
 GroupBlock                      Noble gas
 YearDiscovered                       1898
 Name: 35, dtype: object
+~~~
+{: .output}
+
+However, now we can use the column name instead of the column number.
+
+~~~
+periodic_data.loc[35, 'YearDiscovered']
+~~~
+{: .language-python}
+
+~~~
+'1898'
 ~~~
 {: .output}
 
@@ -564,9 +637,9 @@ periodic_data.loc['Kr', 'BoilingPoint']
 
 Note that this is the same order as before - `row`, followed by `column`.
 
-The same information could have been accessed (though less conveniently) using `loc`. This would require you to know the numerical position of the 'BoilingPoint' column.
+The same information could have been accessed (though less conveniently) using `iloc`. This would require you to know the numerical position of the 'BoilingPoint' column.
 ~~~
-periodic_data.loc[35, 12]
+periodic_data.iloc[35, 12]
 ~~~
 {: .language-python}
 
@@ -578,7 +651,7 @@ periodic_data.loc[35, 12]
 or, you could have combined ways to access data.
 
 ~~~
-periodic_data['BoilingPoint'].loc['Kr']
+periodic_data['BoilingPoint'].iloc[35]
 ~~~
 {: .language-python}
 
@@ -611,8 +684,30 @@ periodic_data.reset_index(inplace=True)
 
 This is a very important command. If you set another index without resetting the index, the `Symbol` column will be lost. This comman reverts it back to a column.
 
-
 ## Filtering and sorting your DataFrame
+
+### Use `.query` to filter data
+You can use the function `.query` to query your data. You type a logical expression in a string inside of the function.
+
+For example, to find all of the elements with a melting point greater than 298,
+~~~
+periodic_data.query('MeltingPoint > 298')
+~~~
+{: .language-python}
+
+You can combine several statements.
+
+~~~
+periodic_data.query('MeltingPoint > 298 and BoilingPoint < 500')
+~~~
+{: .language-python}
+
+You can even use this synatx to compare two columns to one another.
+
+~~~
+periodic_data.query('MeltingPoint > BoilingPoint')
+~~~
+{: .language-python}
 
 ## Adding new columns
 

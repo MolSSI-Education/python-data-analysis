@@ -709,13 +709,15 @@ periodic_data.query('MeltingPoint > BoilingPoint')
 ~~~
 {: .language-python}
 
-## Use `.sort_values` to sort data
+### Use `.sort_values` to sort data
+
+To sort data, you can use the `sort_values` function. 
 
 ~~~
 periodic_data.sort_values(by='MeltingPoint')
 ~~~
 
-This will sort by columns by default. It is also possible to sort an entire DataFrame based on values in a column. However, they all have to be the same type (numeric or string). 
+This will sort  the rows (axis=0) by the column values by default . It is also possible to columns based on values in a row. However, they all have to be the same type (numeric or string). 
 
 For example,
 
@@ -731,16 +733,97 @@ numeric_data.sort_values(by='Au', axis=1)
 ~~~
 {: .language-python}
 
+**Note** how the column orders change.
+
+### Use `.groupby` to group data
+
+You can also group values in a DataFrame using the `groupby` function. 
+
 ~~~
-numeric_data.sort_values(by='As', axis=1)
+grouped_data = periodic_data.groupby(by='StandardState')
+~~~
+
+Here, we are grouping the DataFrame based on values in the column 'ExpectedState'.
+
+We can see the groups which have been created by using `.groups` 
+
+~~~
+grouped_data.groups
 ~~~
 {: .language-python}
 
-**Note** how the column orders change.
+~~~
+{'Expected to be a Gas': Int64Index([117], dtype='int64'),
+ 'Expected to be a Solid': Int64Index([109, 110, 111, 112, 113, 114, 115, 116], dtype='int64'),
+ 'Gas': Int64Index([0, 1, 6, 7, 8, 9, 16, 17, 35, 53, 85], dtype='int64'),
+ 'Liquid': Int64Index([34, 79], dtype='int64'),
+ 'Solid': Int64Index([  2,   3,   4,   5,  10,  11,  12,  13,  14,  15,  18,  19,  20,
+              21,  22,  23,  24,  25,  26,  27,  28,  29,  30,  31,  32,  33,
+              36,  37,  38,  39,  40,  41,  42,  43,  44,  45,  46,  47,  48,
+              49,  50,  51,  52,  54,  55,  56,  57,  58,  59,  60,  61,  62,
+              63,  64,  65,  66,  67,  68,  69,  70,  71,  72,  73,  74,  75,
+              76,  77,  78,  80,  81,  82,  83,  84,  86,  87,  88,  89,  90,
+              91,  92,  93,  94,  95,  96,  97,  98,  99, 100, 101, 102, 103,
+             104, 105, 106, 107, 108],
+            dtype='int64')}
+~~~
+{: .output}
 
-## Adding new columns
+We can then retrieve any group by name. For example, to get the data associated with gases,
+
+~~~
+grouped_data.get_group('Gas')
+~~~
+
+This will return a pandas DataFrame where all of the elements returned have the expected state of Gas.
+
+Grouping is particularly useful for calculating statistics about data that fits a particular criteria. 
+
+~~~
+for group, data in grouped_data:
+    print(group, data['BoilingPoint'].mean(), data['BoilingPoint'].std())
+~~~
+{: .language-python}
+
+~~~
+Expected to be a Gas nan nan
+Expected to be a Solid nan nan
+Gas 102.45272727272727 76.27220858096467
+Liquid 480.91499999999996 210.6683233189081
+Solid 2922.236875 1361.7433032823824
+~~~
+{: .output}
 
 ## Built-in Plotting
+
+Looking at our data above, we notice very high standard deviations for some of the groups. We can examine this visually by looking at a histogram plot. 
+
+Pandas DataFrames have several built-in plotting functions, one of which is `.hist`.
+
+We could thus make histograms for each of our groups by adding this command into our `for` loop.
+
+~~~
+for group, data in grouped_data:
+    print(group, data['BoilingPoint'].mean(), data['BoilingPoint'].std())
+    data.hist(column='BoilingPoint')
+~~~
+{: .language-python}
+
+> ## Exercise
+> Modify your `for` loop so that each graph has a title which is the group name. Save each image as a png with resolution 200 dpi with the file name `group_name`_bp_hist.png.
+>> ## Solution
+>> ~~~
+>> for group, data in grouped_data:
+>>    print(group, data['BoilingPoint'].mean(), data['BoilingPoint'].std())
+>>    data.hist(column='BoilingPoint')
+>>    plt.title(group)
+>>    plt.savefig(F'{group}_bp_hist.png', dpi=200)
+>> ~~~
+>> {: .language-python}
+> {: .solution}
+{: .challenge}
+
+## Adding new columns
 
 
 

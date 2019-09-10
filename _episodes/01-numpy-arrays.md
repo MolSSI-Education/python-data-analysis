@@ -244,7 +244,7 @@ Put the `data` folder from this link into the directory where you are working wi
 >> distances = np.genfromtxt(fname=distance_file, delimiter=',', dtype='unicode')
 >> headers = distances[0]
 >> data = distances[1:]
->> data = data.astype(numpy.float)
+>> data = data.astype(np.float)
 >> ~~~
 >> {: .language-python}
 > {: .solution}
@@ -255,7 +255,11 @@ In a previous lesson, we calculated the mean of each column of the array using t
 > ## Exercise
 > Check out the [numpy documentation](https://docs.scipy.org/doc/numpy/reference/generated/numpy.mean.html) for the mean function. Can you figure out what argument we might change to get the mean of each column?
 >> ## Solution
->> We will use the `axis` argument. If we do not specify `axis`, the mean of the entire array is computed. For the `axis` argument, rows correspond to axis 0, and columns correspond to axis 1. This is similar to slices where you give the indices as `row, column`.
+>> We will use the `axis` argument. If we do not specify `axis`, the mean of the entire array is computed. 
+>> 
+>> A 2-dimensional array has two corresponding axes: the first running vertically downwards across rows (axis 0), and the second running horizontally across columns (axis 1).
+>>
+>> For the `axis` argument, rows correspond to axis 1, and columns correspond to axis 0.
 > {: .solution}
 {: .challenge}
 

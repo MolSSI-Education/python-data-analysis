@@ -684,6 +684,93 @@ periodic_data.reset_index(inplace=True)
 
 This is a very important command. If you set another index without resetting the index, the `Symbol` column will be lost. This comman reverts it back to a column.
 
+## Broadcating and such
+Like NumPy arrays, pandas also takes advantage of broadcasting. You can add scalars or vectors to data easily.
+
+We could calculate the melting point in celsius
+
+~~~
+periodic_data['MeltingPoint'] - 273.15
+~~~
+{: .language-python}
+
+~~~
+Symbol
+H     -259.34
+He    -272.20
+Li     180.50
+Be    1286.85
+B     2074.85
+       ...   
+Fl        NaN
+Mc        NaN
+Lv        NaN
+Ts        NaN
+Og        NaN
+~~~
+{: .output}
+
+If you would like to capture this in a new DataFrame column, you can do so easily by putting the new column name in square brackets following the DataFrame name.
+
+~~~
+periodic_data['MeltingPointC'] = periodic_data['MeltingPoint'] - 273.15
+~~~
+{: .language-python}
+
+> ## Check your understanding
+> Make a new column in your DataFrame called 'BoilingPointC' where you have converted the boiling points from Kelvin to Celsius.
+>> ## Solution
+>> This is very similar to how you created MeltingPointC.
+>> ~~~
+>> periodic_data['BoilingPointC'] = periodic_data['BoilingPoint'] - 273.15
+>> ~~~
+>> {: .language-python}
+> {: .solution}
+{: .challenge}
+
+But what if we wanted to use a function instead of a scalar? Imagine you had written a function to convert temperatures in Kelving to Fahrenheit. 
+
+~~~
+def kelvin_to_fahrenheit(kelvin_temp):
+    fahrenheit = (kelvin_temp - 273.15) * 9/5 +32
+    return fahrenheit
+~~~
+{: .language-python}
+
+If you wanted to apply this function to every row, your first instinct might be to write a `for` loop. This would work, but pandas has a built in method called `apply` to easily allow you to do this.
+
+When you call the `apply` method, you give it a function name which you would like to apply to every element of whatever you are using it on. 
+
+~~~
+# Calculate the boiling point in fahrenheit
+periodic_data['BoilingPoint'].apply(kelvin_to_fahrenheit)
+~~~
+{: .language-python}
+
+~~~
+Symbol
+H     -423.166
+He    -452.074
+Li    2447.330
+Be    4479.530
+B     7231.730
+        ...   
+Fl         NaN
+Mc         NaN
+Lv         NaN
+Ts         NaN
+Og         NaN
+Name: BoilingPoint, Length: 118, dtype: float64
+~~~
+{: .output}
+
+To save it as a new column
+
+~~~
+periodic_data['BoilingPointF'] = periodic_data['BoilingPoint'].apply(kelvin_to_fahrenheit)
+~~~
+
+
 ## Filtering and sorting your DataFrame
 
 ### Use `.query` to filter data

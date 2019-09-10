@@ -798,11 +798,13 @@ Solid 2922.236875 1361.7433032823824
 
 ## Built-in Plotting
 
-Looking at our data above, we notice very high standard deviations for some of the groups. We can examine this visually by looking at a histogram plot. 
+Looking at our data above, we notice very high standard deviations for some of the groups. One way we might examine this visually by looking at a histogram plot. 
 
-Pandas DataFrames have several built-in plotting functions, one of which is `.hist`.
+Pandas DataFrames have several built-in plotting functions, one of which is `.hist`. If we call this function on just a DataFrame, it will make a histogram for each column of data. 
 
-We could thus make histograms for each of our groups by adding this command into our `for` loop.
+In our case, we are interested in the histogram for each group we have created. 
+
+We could make histograms for each of our groups by adding this command into our `for` loop.
 
 ~~~
 for group, data in grouped_data:
@@ -810,6 +812,10 @@ for group, data in grouped_data:
     data.hist(column='BoilingPoint')
 ~~~
 {: .language-python}
+
+You should see a histogram for each group after executing this cell. The histogram for 'Solid' is shown below.
+
+<img src = '../fig/solid_hist.png'>
 
 > ## Exercise
 > Modify your `for` loop so that each graph has a title which is the group name. Save each image as a png with resolution 200 dpi with the file name `group_name`_bp_hist.png.
@@ -825,11 +831,29 @@ for group, data in grouped_data:
 > {: .solution}
 {: .challenge}
 
-You could have also gotten 
+You could have also gotten all of the histograms in the same figure 
 
-## Adding new columns
+~~~
+periodic_data.hist(column='BoilingPoint', by='StandardState')
+~~~
+{: .language-python}
 
+<img src = "../fig/all_histograms.png">
 
+However, you can see that this is a little hard to read. It would be possible to make this plot more readable, but we will not cover that in this lesson.
+
+Another plotting option you might have chosen was a boxplot
+
+~~~
+periodic_data.boxplot(column='BoilingPoint', by='StandardState', rot=90)
+
+plt.suptitle("")
+~~~
+{: .language-python}
+
+<img src='../fig/boiling_point_box.png'>
+
+These are just a few examples of visualizations you can do on pandas DataFrames. You can read more in the [pandas documentation](https://pandas.pydata.org/pandas-docs/stable/user_guide/visualization.html).
 
 {% include links.md %}
 

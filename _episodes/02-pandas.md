@@ -717,7 +717,9 @@ To sort data, you can use the `sort_values` function.
 periodic_data.sort_values(by='MeltingPoint')
 ~~~
 
-This will sort  the rows (axis=0) by the column values by default . It is also possible to columns based on values in a row. However, they all have to be the same type (numeric or string). 
+This will sort  the rows (axis=0) by the values in the 'MeltingPoint' column. If you are familiar with Excel, this is similar to how spreadsheets are sorted if you sort based on one of the columns. This sort will return a DataFrame where elements with the lowest melting point are listed first. 
+
+It is also possible to columns based on values in a row. However, they all have to be the same type (numeric or string). 
 
 For example,
 
@@ -822,6 +824,8 @@ for group, data in grouped_data:
 >> {: .language-python}
 > {: .solution}
 {: .challenge}
+
+You could have also gotten 
 
 ## Adding new columns
 

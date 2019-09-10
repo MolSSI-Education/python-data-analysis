@@ -134,6 +134,95 @@ In contrast, if `a` and `b` were lists, you would get an error.
 > {: .solution}
 {: .challenge}
 
+## Making copies 
+
+One important aspect of mutable objects in Python to be aware of is behavior when you try to make copies. Imagine a situation where you are trying to make a copy of a list.
+
+~~~
+my_list = [1, 2, 3]
+my_list_copy = my_list
+
+my_list_copy[0] = 100
+print(my_list_copy)
+~~~
+{: .language-python}
+
+~~~
+[100, 2, 3]
+~~~
+{: .output}
+
+This is probably what you expected. But, what if we print our original list?
+
+~~~
+print(my_list)
+~~~
+{: .language-python}
+
+~~~
+print(my_list)
+~~~
+{: .language-python}
+
+~~~
+[100, 2, 3]
+~~~
+{: .output}
+
+This is probably **not** what you expected. The statements `my_list_copy = my_list` did not create a new copy of our list. Instead, it pointed back at the original list! The vocabulary for this is that Python is a *pass by reference* language. When you set `my_list_copy = my_list`, `my_list_copy` is literally set equal to `my_list`, *not* the values in the list. 
+
+If you truly wanted to create a copy, you would use the `.copy()` method on the list.
+
+~~~
+my_list = [1, 2, 3]
+my_list_copy = my_list.copy()
+
+my_list_copy[0] = 100
+print(my_list_copy)
+print(my_list)
+~~~
+{: .language-python}
+
+~~~
+my_list = [1, 2, 3]
+my_list_copy = my_list.copy()
+
+my_list_copy[0] = 100
+print(my_list_copy)
+print(my_list)
+~~~
+{: .language-python}
+
+~~~
+[100, 2, 3]
+[1, 2, 3]
+~~~
+{: .output}
+
+This behavior also occurs with numpy arrays.
+
+~~~
+r1_copy = r1
+r1_copy[0] = 100
+
+print(r1)
+print(r1_copy)
+~~~
+{: .language-python}
+
+A difference between numpy arrays and lists can be seen when you take slices.
+
+~~~
+r1_slice = r1[1:]
+r1_array_slice = r1_array[1:]
+~~~
+{: .language-python}
+
+What do you notice about the original array if you try to overwrite the first element of each slice?
+
+When you slice a numpy array, the slice will point back to the original array. If you would truly like to make a copy, use the `.copy()` function.
+
+
 ## Analyzing Tabular Data
 
 Let's consider tabular data from the Python Data and Scripting Lesson. If you have not completed that lesson, you can download the files for it [here](https://molssi-education.github.io/python_scripting_cms/data/data.zip).

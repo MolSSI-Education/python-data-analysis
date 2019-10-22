@@ -97,9 +97,10 @@ where [x1, x2, x3] was `oxygen_coord` and [y1, y2, y3] was `translation_vector`.
 oxygen_coord_new = oxygen_coord + translation_vector
 print(oxygen_coord_new)
 ~~~
+{: .language-python}
 
 ~~~
-[0.       0.092844 1.065491]
+[ 0.1      -0.107156  0.965491]
 ~~~
 {: .output}
 
@@ -138,6 +139,15 @@ oxygen_list + translation_vector
 [0.0, -0.007156, 0.965491, 0.1, -0.1, 0.0]
 ~~~
 {: .output}
+
+As a note, if you wanted to concatenate the two where `oxygen_coordinate` was a numpy array, you could have done so with the `np.concatenate` function.
+
+~~~
+# To concatenate numpy arrays...
+
+np.concatenate((oxygen_coord, translation_vector))
+~~~
+{: .language-python}
 
 You can add two arrays together, multiply arrays by scalars, or do element-wise multiplcation of arrays.
 

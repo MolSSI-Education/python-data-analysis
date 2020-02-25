@@ -1,9 +1,10 @@
 ---
-title: "Working with pandas dataframes"
+title: "Using pandas for data analysis"
 teaching: 0
 exercises: 0
 questions:
-- "Key question (FIXME)"
+- "What is pandas?"
+- "How do I access data in a pandas dataframe?"
 objectives:
 - "First learning objective. (FIXME)"
 keypoints:
@@ -19,7 +20,7 @@ Pandas is built to closely work with NumPy. Many functions which work on NumPy a
 To use pandas, you must first make sure it is installed, then import it. If you do not have pandas installed, install it using conda with the following command
 
 ~~~
-conda install -c anaconda pandas 
+conda install -c anaconda pandas
 ~~~
 {: .language-bash}
 
@@ -41,7 +42,7 @@ periodic_data = pd.read_csv('PubChemElements_all.csv')
 ~~~
 {: .language-python}
 
-Since this file is relatively simple, we do not need any additional arguments to the function. The `read_csv` function reads in tabular data which is comma delimited by default. 
+Since this file is relatively simple, we do not need any additional arguments to the function. The `read_csv` function reads in tabular data which is comma delimited by default.
 
 ## Examining the data
 The variable `periodic_data` is now a pandas DataFrame with the information contained in the csv file. You can examine the DataFrame using the `.head()` method. This shows the first 5 rows stored in the DataFrame.
@@ -227,7 +228,7 @@ dtypes: float64(8), int64(1), object(8)
 memory usage: 15.8+ KB
 ~~~
 {: .outuput}
- 
+
  --       
 - First, the data type is listed. This is a pandas DataFrame. Next, it tells us that we have 118 rows (118 entries) in the DataFrame.
 - There are 17 columns of data
@@ -362,14 +363,14 @@ periodic_data.describe()
 </div>
 </div>
 
-The describe function lists the `mean`, `max`, `min`, standard deviation and percentiles for each column excluding `NaN` values. 
+The describe function lists the `mean`, `max`, `min`, standard deviation and percentiles for each column excluding `NaN` values.
 
 ## Accessing Data
 
 Data in pandas DataFrames are stored in `rows` and `columns`.
 
 ## Accessing data using row and column numbers
-Pandas DataFrames are organized using `columns`, which we have already discussed and `index` for the rows. 
+Pandas DataFrames are organized using `columns`, which we have already discussed and `index` for the rows.
 
 ### To access data using the row number and column number, use the `.iloc` method.
 
@@ -479,7 +480,7 @@ periodic_data['Electronegativity']
 2      0.98
 3      1.57
 4      2.04
-       ... 
+       ...
 113     NaN
 114     NaN
 115     NaN
@@ -514,7 +515,7 @@ periodic_data[['Name','Electronegativity']]
 {: .language-output}
 
 > ## Check your understanding
-> How would you select the columns 'Name', 'AtomicMass', and 'StandardState''. 
+> How would you select the columns 'Name', 'AtomicMass', and 'StandardState''.
 >> ## Solution
 >> To select these columns, you would put them in a list in square brackets (`[]`) following the name of the DataFrame.
 >> ~~~
@@ -728,7 +729,7 @@ periodic_data['MeltingPointC'] = periodic_data['MeltingPoint'] - 273.15
 > {: .solution}
 {: .challenge}
 
-But what if we wanted to use a function instead of a scalar? Imagine you had written a function to convert temperatures in Kelving to Fahrenheit. 
+But what if we wanted to use a function instead of a scalar? Imagine you had written a function to convert temperatures in Kelving to Fahrenheit.
 
 ~~~
 def kelvin_to_fahrenheit(kelvin_temp):
@@ -739,7 +740,7 @@ def kelvin_to_fahrenheit(kelvin_temp):
 
 If you wanted to apply this function to every row, your first instinct might be to write a `for` loop. This would work, but pandas has a built in method called `apply` to easily allow you to do this.
 
-When you call the `apply` method, you give it a function name which you would like to apply to every element of whatever you are using it on. 
+When you call the `apply` method, you give it a function name which you would like to apply to every element of whatever you are using it on.
 
 ~~~
 # Calculate the boiling point in fahrenheit
@@ -798,15 +799,15 @@ periodic_data.query('MeltingPoint > BoilingPoint')
 
 ### Use `.sort_values` to sort data
 
-To sort data, you can use the `sort_values` function. 
+To sort data, you can use the `sort_values` function.
 
 ~~~
 periodic_data.sort_values(by='MeltingPoint')
 ~~~
 
-This will sort  the rows (axis=0) by the values in the 'MeltingPoint' column. If you are familiar with Excel, this is similar to how spreadsheets are sorted if you sort based on one of the columns. This sort will return a DataFrame where elements with the lowest melting point are listed first. 
+This will sort  the rows (axis=0) by the values in the 'MeltingPoint' column. If you are familiar with Excel, this is similar to how spreadsheets are sorted if you sort based on one of the columns. This sort will return a DataFrame where elements with the lowest melting point are listed first.
 
-It is also possible to columns based on values in a row. However, they all have to be the same type (numeric or string). 
+It is also possible to columns based on values in a row. However, they all have to be the same type (numeric or string).
 
 For example,
 
@@ -826,7 +827,7 @@ numeric_data.sort_values(by='Au', axis=1)
 
 ### Use `.groupby` to group data
 
-You can also group values in a DataFrame using the `groupby` function. 
+You can also group values in a DataFrame using the `groupby` function.
 
 ~~~
 grouped_data = periodic_data.groupby(by='StandardState')
@@ -834,7 +835,7 @@ grouped_data = periodic_data.groupby(by='StandardState')
 
 Here, we are grouping the DataFrame based on values in the column 'ExpectedState'.
 
-We can see the groups which have been created by using `.groups` 
+We can see the groups which have been created by using `.groups`
 
 ~~~
 grouped_data.groups
@@ -866,7 +867,7 @@ grouped_data.get_group('Gas')
 
 This will return a pandas DataFrame where all of the elements returned have the expected state of Gas.
 
-Grouping is particularly useful for calculating statistics about data that fits a particular criteria. 
+Grouping is particularly useful for calculating statistics about data that fits a particular criteria.
 
 ~~~
 for group, data in grouped_data:
@@ -885,11 +886,11 @@ Solid 2922.236875 1361.7433032823824
 
 ## Built-in Plotting
 
-Looking at our data above, we notice very high standard deviations for some of the groups. One way we might examine this visually by looking at a histogram plot. 
+Looking at our data above, we notice very high standard deviations for some of the groups. One way we might examine this visually by looking at a histogram plot.
 
-Pandas DataFrames have several built-in plotting functions, one of which is `.hist`. If we call this function on just a DataFrame, it will make a histogram for each column of data. 
+Pandas DataFrames have several built-in plotting functions, one of which is `.hist`. If we call this function on just a DataFrame, it will make a histogram for each column of data.
 
-In our case, we are interested in the histogram for each group we have created. 
+In our case, we are interested in the histogram for each group we have created.
 
 We could make histograms for each of our groups by adding this command into our `for` loop.
 
@@ -918,7 +919,7 @@ You should see a histogram for each group after executing this cell. The histogr
 > {: .solution}
 {: .challenge}
 
-You could have also gotten all of the histograms in the same figure 
+You could have also gotten all of the histograms in the same figure
 
 ~~~
 periodic_data.hist(column='BoilingPoint', by='StandardState')
@@ -943,4 +944,3 @@ plt.suptitle("")
 These are just a few examples of visualizations you can do on pandas DataFrames. You can read more in the [pandas documentation](https://pandas.pydata.org/pandas-docs/stable/user_guide/visualization.html).
 
 {% include links.md %}
-

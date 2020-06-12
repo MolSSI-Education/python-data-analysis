@@ -6,9 +6,11 @@ questions:
 - "What is pandas?"
 - "How do I access data in a pandas dataframe?"
 objectives:
-- "First learning objective. (FIXME)"
+- "Use pandas to examine and analyze data"
 keypoints:
-- "First key point. Brief Answer to questions. (FIXME)"
+- "Pandas stores data in a structure called a dataframe"
+- "Pandas can read data that has lots of different data types."
+- "You can easily get statistics from a dataframe by using methods like df.describe()"
 ---
 [Pandas](https://pandas.pydata.org) is another Python package which is very popular for data analysis. The key feature of pandas is the `dataframe`. In this lesson, we will cover pandas dataframes and some basic analysis.
 
@@ -589,15 +591,15 @@ KeyError: 'Kr'
 ~~~
 {: .error}
 
-It didn't work! Why? Examine `periodic_data` again. The index is the same as before. This is because the `.set_index` method **returns** a new copy of the dataframe. If we wish to have later access to this copy, we have two options. We can capture the value in a variable (as in `periodic_data_index = periodic_data.set_index('Symbol')`), or we can use the keyword argument `inplace=True`. When we use this argument, pandas will overwrite the original DataFrame. **Always look for this argument in pandas functions.**
+It didn't work! Why? Examine `periodic_data` again. The index is the same as before. This is because the `.set_index` method **returns** a new copy of the dataframe. If we wish to have later access to this copy, we have two options. We can capture the value in a variable (as in `periodic_data_index = periodic_data.set_index('Symbol')`).
 
 ~~~
-periodic_data.set_index('Symbol', inplace=True)
+periodic_data_symbols = periodic_data.set_index('Symbol')
 ~~~
 {: .language-python}
 
 ~~~
-periodic_data.loc['Kr']
+periodic_data_symbols.loc['Kr']
 ~~~
 {: .language-python}
 
@@ -627,7 +629,7 @@ This lists all the information for the entry. Note the bottom, where it says `Na
 You can use row, column indexing with both the `loc` and `iloc` command. For example, to get the boiling point of Kr, you could use
 
 ~~~
-periodic_data.loc['Kr', 'BoilingPoint']
+periodic_data_symbols.loc['Kr', 'BoilingPoint']
 ~~~
 {: .language-python}
 
@@ -640,7 +642,7 @@ Note that this is the same order as before - `row`, followed by `column`.
 
 The same information could have been accessed (though less conveniently) using `iloc`. This would require you to know the numerical position of the 'BoilingPoint' column.
 ~~~
-periodic_data.iloc[35, 12]
+periodic_data_symbols.iloc[35, 12]
 ~~~
 {: .language-python}
 
@@ -652,7 +654,7 @@ periodic_data.iloc[35, 12]
 or, you could have combined ways to access data.
 
 ~~~
-periodic_data['BoilingPoint'].iloc[35]
+periodic_data_symbols['BoilingPoint'].iloc[35]
 ~~~
 {: .language-python}
 
@@ -668,22 +670,35 @@ periodic_data['BoilingPoint'].iloc[35]
 > The value in cell (50, 5).  
 >> ## Solution
 >> ~~~
->> periodic_data.loc['B', 'ElectronConfiguration']
->> periodic_data['AtomicRadius'].iloc[115]
->> periodic_data.iloc[50,5]
+>> periodic_data_symbols.loc['B', 'ElectronConfiguration']
+>> periodic_data_symbols['AtomicRadius'].iloc[115]
+>> periodic_data_symbols.iloc[50,5]
 >> ~~~
 >> {: .language-python}
 > {: .solution}
 {: .challenge}
 
-Reset, or change your index back to numbers using the command `reset_index`
 
-~~~
-periodic_data.reset_index(inplace=True)
-~~~
-{: .language-python}
-
-This is a very important command. If you set another index without resetting the index, the `Symbol` column will be lost. This comman reverts it back to a column.
+> ## Another option for setting the index
+> Instead of making a new variable (`periodic_data_symbols`), we might have chose to overwrite our existing dataframe. In pandas, you can do that by adding an additional argument to your `set_index` function.
+> 
+> We can use the keyword argument `inplace=True`. When we use this argument, pandas will overwrite the original DataFrame. **Always look for this argument in pandas functions.**
+> 
+> ~~~
+> periodic_data.set_index('Symbol', inplace=True)
+> ~~~
+> {: .language-python}
+>
+> If you wanted to change your index back to numbers, you would use the command `reset_index`
+>
+> ~~~
+> periodic_data.reset_index(inplace=True)
+> ~~~
+> {: .language-python}
+>
+>This is a very important command. If you set another index without resetting the index, the `Symbol` column will be lost. This comman reverts it back to a column.
+>
+{: .callout}
 
 ## Broadcating and such
 Like NumPy arrays, pandas also takes advantage of broadcasting. You can add scalars or vectors to data easily.
@@ -691,7 +706,7 @@ Like NumPy arrays, pandas also takes advantage of broadcasting. You can add scal
 We could calculate the melting point in celsius
 
 ~~~
-periodic_data['MeltingPoint'] - 273.15
+periodic_data_symbols['MeltingPoint'] - 273.15
 ~~~
 {: .language-python}
 
@@ -714,7 +729,7 @@ Og        NaN
 If you would like to capture this in a new DataFrame column, you can do so easily by putting the new column name in square brackets following the DataFrame name.
 
 ~~~
-periodic_data['MeltingPointC'] = periodic_data['MeltingPoint'] - 273.15
+periodic_data_symbols['MeltingPointC'] = periodic_data_symbols['MeltingPoint'] - 273.15
 ~~~
 {: .language-python}
 
@@ -723,13 +738,13 @@ periodic_data['MeltingPointC'] = periodic_data['MeltingPoint'] - 273.15
 >> ## Solution
 >> This is very similar to how you created MeltingPointC.
 >> ~~~
->> periodic_data['BoilingPointC'] = periodic_data['BoilingPoint'] - 273.15
+>> periodic_data_symbols['BoilingPointC'] = periodic_data_symbols['BoilingPoint'] - 273.15
 >> ~~~
 >> {: .language-python}
 > {: .solution}
 {: .challenge}
 
-But what if we wanted to use a function instead of a scalar? Imagine you had written a function to convert temperatures in Kelving to Fahrenheit.
+But what if we wanted to use a function instead of a scalar? Imagine you had written a function to convert temperatures in Kelvin to Fahrenheit.
 
 ~~~
 def kelvin_to_fahrenheit(kelvin_temp):
@@ -744,7 +759,7 @@ When you call the `apply` method, you give it a function name which you would li
 
 ~~~
 # Calculate the boiling point in fahrenheit
-periodic_data['BoilingPoint'].apply(kelvin_to_fahrenheit)
+periodic_data_symbols['BoilingPoint'].apply(kelvin_to_fahrenheit)
 ~~~
 {: .language-python}
 
@@ -769,6 +784,15 @@ To save it as a new column
 
 ~~~
 periodic_data['BoilingPointF'] = periodic_data['BoilingPoint'].apply(kelvin_to_fahrenheit)
+~~~
+{: .language-python}
+
+## Saving your new Dataframe
+
+If you wanted to save your data as a csv, you could do it using the command `to_csv`
+
+~~~
+periodic_data_symbols.to_csv('periodic_data_processed.csv')
 ~~~
 {: .language-python}
 

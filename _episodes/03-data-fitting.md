@@ -12,6 +12,9 @@ keypoints:
 - "Recasting your data to numpy arrays lets you utilize features like broadcasting, which can be helpful in evaluating functions."
 - "If the initial fit model does not match the data well, use the bounds argument of fit_curve to guess a range of values for the fit parameters."
 ---
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"> </script> <script src="https://unpkg.com/ngl@0.10.4/dist/ngl.js"></script>
+
+
 # Data fitting
 Python is a power tool for fitting data to any functional form. You are no longer limited to the simple linear or polynominal functions you could fit in a spreadsheet program. You can also calculate the standard error for any parameter in a functional fit.
 

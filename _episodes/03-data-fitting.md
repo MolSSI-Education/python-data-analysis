@@ -52,8 +52,8 @@ plt.plot(xdata, ydata, 'o')
 <img src = '../fig/03-data.png'>
 
 This data could probably be fit to many functional forms. We will try two different functional forms. (Looking at data and knowing what function it might fit is non-trivial and beyond the scope of this lesson. For purposes of this lesson, we will simply fit the data to given functional forms.)
-1.  Gaussian Function: $ y = A e^{-Bx^2} $
-2.  Cosine Function: $ D cos (E x) $
+1.  Gaussian Function: $$ y = A e^{-Bx^2} $$
+2.  Cosine Function: $$ D cos (E x) $$
 
 ## Example 1 - the Gaussian function
 First, let's fit the data to the Gaussian function.  Our goal is to find the values of A and B that best fit our data.  First, we need to write a python function for the Gaussian function equation.  The function should accept as inputs the independent varible (the x-values) and all the parameters that will be fit.

@@ -139,7 +139,7 @@ def cos_func(x, D, E):
 
 <img src = '../fig/03-cosine_fit1.png'>
 
-To fix this, we need to give a guess for what we think our parameters are.  Thinking about the form of the cosine function, the height of the function is controlled by the D parameter.  Looking at our graph, it seems the value of D is somewhere between 15 and 17.  Similarly, the E parameter tells us how many cycles occur over the 0 to 2$\pi$ interval.  This is a very wide graph; there is clearly much less than one cycle between 0 and 2$\pi$, so we will guess that E is between 0 and 1.  To incorporate these guesses into our code, we create two new arrays.  One array specifies the lower bound for each parameter; the other specifies the upper bound for each parameter.  We then specify these bounds when we call `curve_fit`.
+To fix this, we need to give a guess for what we think our parameters are.  Thinking about the form of the cosine function, the height of the function is controlled by the D parameter.  Looking at our graph, it seems the value of D is somewhere between 15 and 17.  Similarly, the E parameter tells us how many cycles occur over the 0 to 2$$\pi$$ interval.  This is a very wide graph; there is clearly much less than one cycle between 0 and 2$$\pi$$, so we will guess that E is between 0 and 1.  To incorporate these guesses into our code, we create two new arrays.  One array specifies the lower bound for each parameter; the other specifies the upper bound for each parameter.  We then specify these bounds when we call `curve_fit`.
 
 ```
 lower = [15, 0]

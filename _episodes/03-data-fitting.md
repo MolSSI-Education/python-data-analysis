@@ -12,6 +12,9 @@ keypoints:
 - "Recasting your data to numpy arrays lets you utilize features like broadcasting, which can be helpful in evaluating functions."
 - "If the initial fit model does not match the data well, use the bounds argument of fit_curve to guess a range of values for the fit parameters."
 ---
+<script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML"> </script> <script src="https://unpkg.com/ngl@0.10.4/dist/ngl.js"></script>
+
+
 # Data fitting
 Python is a power tool for fitting data to any functional form. You are no longer limited to the simple linear or polynominal functions you could fit in a spreadsheet program. You can also calculate the standard error for any parameter in a functional fit.
 
@@ -49,8 +52,8 @@ plt.plot(xdata, ydata, 'o')
 <img src = '../fig/03-data.png'>
 
 This data could probably be fit to many functional forms. We will try two different functional forms. (Looking at data and knowing what function it might fit is non-trivial and beyond the scope of this lesson. For purposes of this lesson, we will simply fit the data to given functional forms.)
-1.  Gaussian Function: $ y = A e^{-Bx^2} $
-2.  Cosine Function: $ D cos (E x) $
+1.  Gaussian Function: $$ y = A e^{-Bx^2} $$
+2.  Cosine Function: $$ D cos (E x) $$
 
 ## Example 1 - the Gaussian function
 First, let's fit the data to the Gaussian function.  Our goal is to find the values of A and B that best fit our data.  First, we need to write a python function for the Gaussian function equation.  The function should accept as inputs the independent varible (the x-values) and all the parameters that will be fit.
@@ -138,6 +141,7 @@ plt.plot(xdata, fit_cosine, '-', label='fit')
 <img src = '../fig/03-cosine_fit1.png'>
 
 To fix this, we need to give a guess for what we think our parameters are.  Thinking about the form of the cosine function, the height of the function is controlled by the D parameter.  Looking at our graph, it seems the value of D is somewhere between 15 and 17, so we will guess 16.  Similarly, the E parameter tells us how many cycles occur over the 0 to 2 $\pi$ interval.  This is a very wide graph; there is clearly much less than one cycle between 0 and 2 $\pi$, so we will guess that E is 0.1.  To incorporate these guesses into our code, we will create a new array called guess.  We then specify our guess when we call `curve_fit`.  
+
 
 ```
 guess = [16, 0.1]

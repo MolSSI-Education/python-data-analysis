@@ -20,7 +20,7 @@ The basic steps to fitting data are:
 1. Import the curve_fit function from scipy.
 2. Create a list or numpy array of your independent variable (your x values). You might read this data in from another source, like a CSV file.
 3. Create a list of numpy array of your depedent variables (your y values). You might read this data in from another source, like a CSV file.
-4. Create a function for the equation you want to fit. The function should accept as inputs the dependent variable and all the parameters to be fit.
+4. Create a function for the equation you want to fit. The function should accept as inputs the independent variable(s) and all the parameters to be fit.
 5. Use the function `curve_fit` to fit your data.
 6. Extract the fit parameters from the output of `curve_fit`.
 7. Use your function to calculate y values using your fit model to see how well your model fits the data.
@@ -108,11 +108,12 @@ SE_B = SE[1]
 print(F'The value of A is {fit_A:.5f} with standard error of {SE_A:.5f}.')
 print(F'The value of B is {fit_B:.5f} with standard error of {SE_B:.5f}.')
 ```
+{: .language-python}
 ```
 The value of A is 16.93429 with standard error of 0.35658.
 The value of B is 0.01574 with standard error of 0.00087.
 ```
-{: .language-python}
+{: .output}
 
 ## Example 2 - the cosine function
 
@@ -123,25 +124,7 @@ def cos_func(x, D, E):
     y = D*np.cos(E*x)
     return y
 
-    parameters, covariance = curve_fit(cos_func, xdata, ydata)
-    fit_D = parameters[0]
-    fit_E = parameters[1]
-
-    fit_cosine = cos_func(xdata, fit_D, fit_E)
-
-    plt.plot(xdata, ydata, 'o', label='data')
-    plt.plot(xdata, fit_cosine, '-', label='fit')
-```
-{: .language-python}
-
-<img src = '../fig/03-cosine_fit1.png'>
-
-To fix this, we need to give a guess for what we think our parameters are.  Thinking about the form of the cosine function, the height of the function is controlled by the D parameter.  Looking at our graph, it seems the value of D is somewhere between 15 and 17.  Similarly, the E parameter tells us how many cycles occur over the 0 to 2$\pi$ interval.  This is a very wide graph; there is clearly much less than one cycle between 0 and 2$\pi$, so we will guess that E is between 0 and 1.  To incorporate these guesses into our code, we create two new arrays.  One array specifies the lower bound for each parameter; the other specifies the upper bound for each parameter.  We then specify these bounds when we call `curve_fit`.
-
-```
-lower = [15, 0]
-upper = [17, 1]
-parameters, covariance = curve_fit(cos_func, xdata, ydata, bounds=(lower, upper) )
+parameters, covariance = curve_fit(cos_func, xdata, ydata)
 fit_D = parameters[0]
 fit_E = parameters[1]
 
@@ -149,6 +132,24 @@ fit_cosine = cos_func(xdata, fit_D, fit_E)
 
 plt.plot(xdata, ydata, 'o', label='data')
 plt.plot(xdata, fit_cosine, '-', label='fit')
+```
+{: .language-python}
+
+<img src = '../fig/03-cosine_fit1.png'>
+
+To fix this, we need to give a guess for what we think our parameters are.  Thinking about the form of the cosine function, the height of the function is controlled by the D parameter.  Looking at our graph, it seems the value of D is somewhere between 15 and 17, so we will guess 16.  Similarly, the E parameter tells us how many cycles occur over the 0 to 2 $\pi$ interval.  This is a very wide graph; there is clearly much less than one cycle between 0 and 2 $\pi$, so we will guess that E is 0.1.  To incorporate these guesses into our code, we will create a new array called guess.  We then specify our guess when we call `curve_fit`.  
+
+```
+guess = [16, 0.1]
+parameters, covariance = curve_fit(cos_func, xdata, ydata, p0=guess)
+fit_D = parameters[0]
+fit_E = parameters[1]
+
+fit_cosine = cos_func(xdata, fit_D, fit_E)
+
+plt.plot(xdata, ydata, 'o', label='data')
+plt.plot(xdata, fit_cosine, '-', label='fit')
+plt.savefig('03-cosine_fit2.png')
 ```
 {: .language-python}
 

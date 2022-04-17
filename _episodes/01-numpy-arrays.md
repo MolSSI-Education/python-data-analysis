@@ -26,7 +26,12 @@ There are also differences in how lists and numpy arrays behave. Let's look at s
 
 First open a Jupyter notebook to record your work. 
 
-To use the numpy library, we have to import it. When `numpy` is imported, it is often shortened to `np`. 
+To use the numpy library, we have to import it. When `numpy` is imported, it is often shortened to `np` as shown below:
+
+~~~
+import numpy as np
+~~~
+{: .language-python}
 
 We will start with reading in some data from an xyz file. The following block will read a file called `water.xyz` (from the Python Data and Scripting lesson) and saving two numpy arrays - one called `coordinates` with the molecular coordinates, and another called `symbols` with the element symbols.
 
